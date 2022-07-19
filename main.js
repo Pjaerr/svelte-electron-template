@@ -1,6 +1,6 @@
-const { app, BrowserWindow } = require("electron");
+const { app, BrowserWindow, ipcMain } = require('electron');
 
-const path = require("path");
+const path = require('path');
 
 app.whenReady().then(() => {
   const mainWindow = new BrowserWindow({
@@ -9,23 +9,23 @@ app.whenReady().then(() => {
     webPreferences: {
       nodeIntegration: false,
       contextIsolation: true,
-      preload: path.join(__dirname, "preload.js"),
+      preload: path.join(__dirname, 'preload.js'),
     },
   });
 
-  mainWindow.loadFile("./public/index.html");
+  mainWindow.loadFile('./public/index.html');
 
-  ipcMain.on("hello", (e, data) => {
+  ipcMain.on('hello', (e, data) => {
     // Handle the "hello" message being received from the Svelte app
 
     const someData = {
-      name: "Electron",
+      name: 'Electron',
     };
 
-    mainWindow.webContents.send("world", someData);
+    mainWindow.webContents.send('world', someData);
   });
 });
 
-app.on("window-all-closed", () => {
+app.on('window-all-closed', () => {
   app.quit();
 });
